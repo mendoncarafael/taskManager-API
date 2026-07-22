@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es2025",
+        "lib": ["ES2025"],
+        "strict": true,
+        "skipLibCheck": true,
+        "module": "node16",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "types": ["jest"],
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
+    }
+}

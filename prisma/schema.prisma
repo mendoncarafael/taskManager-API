@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRoles {
+  admin
+  member
+}
+
+model Users {
+  id String @id @default(uuid()) 
+  name String 
+  email String @unique
+  password String 
+
+  tasks Tasks[]
+  taskHistory TasksHistory[]
+  team TeamMembers[]
+  role UserRoles @default(member)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime? @updatedAt @map("updated_at")
+}
+
+model Teams {
+  id String @id @default(uuid())
+  name String 
+  description String?
+
+  members TeamMembers[]
+  tasks Tasks[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime? @updatedAt @map("updated_at")
+}
+
+model TeamMembers {
+  id String @id @default(uuid())
+  userID String @map("user_id")
+  teamID String @map("team_id")
+  
+  users Users @relation(fields: [userID], references: [id])
+  team Teams @relation(fields: [teamID], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  @@unique([userID, teamID])
+}
+
+enum TaskStatus {
+  pending
+  in_progress
+  completed
+}
+
+enum Priority {
+  high
+  medium 
+  low
+}
+
+model Tasks {
+  id String @id @default(uuid())
+  title String 
+  description String?
+  status TaskStatus @default(pending)
+  teamID String @map("team_id")
+  assignedTo String @map("assigned_to")
+  priority Priority
+
+  task Teams @relation(fields: [teamID],references: [id])
+  assigned Users @relation(fields: [assignedTo], references: [id]) 
+
+  taskHistory TasksHistory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime? @updatedAt @map("updated_at")
+}
+
+model TasksHistory {
+  id String @id @default(uuid())
+  taskID String @map("task_id")
+  changedBY String@map("changed_by")
+  oldStatus TaskStatus 
+  newStatus TaskStatus
+
+  task Tasks @relation(fields: [taskID], references: [id])
+  changed Users @relation(fields: [changedBY], references: [id])
+
+  changedAt DateTime  @map("changed_at") 
+}
