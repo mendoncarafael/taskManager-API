@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import { prisma } from "../../prisma/database/prisma";
 import { AppError } from "@/utils/AppError";
 import { sign } from "jsonwebtoken";
-import { ensureAuthenticated } from "@/middlewares/ensureAuthenticated";
 import { authConfig } from "@/configs/auth";
 
 export class SessionsController {

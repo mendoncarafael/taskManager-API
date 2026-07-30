@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TasksHistory" ALTER COLUMN "changed_at" SET DEFAULT CURRENT_TIMESTAMP;
