@@ -74,11 +74,11 @@ model Tasks {
   description String?
   status TaskStatus @default(pending)
   teamID String @map("team_id")
-  assignedTo String @map("assigned_to")
+  assignedTo String? @map("assigned_to")
   priority Priority
 
   task Teams @relation(fields: [teamID],references: [id])
-  assigned Users @relation(fields: [assignedTo], references: [id]) 
+  assigned Users? @relation(fields: [assignedTo], references: [id]) 
 
   taskHistory TasksHistory[]
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { check, z } from "zod";
+import { z } from "zod";
 import { hash } from "bcrypt";
 import { prisma } from "../../prisma/database/prisma";
 import { AppError } from "@/utils/AppError";
